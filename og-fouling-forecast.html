@@ -1,0 +1,101 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. tests, examples), we assume the server is started with
+    'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../px-moment-imports/px-moment-imports.html"/>
+<link rel="import" href="../px-d3-imports/px-d3-imports.html"/>
+<script src="d3-tip.js"></script>
+
+<link rel="import" href="../px-dropdown/px-dropdown.html"/>
+<link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+<link rel="import" href="css/og-fouling-forecast-styles.html">
+
+<!--
+REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
+
+### Usage
+
+    <og-fouling-forecast counter-value="1"></og-fouling-forecast>
+
+@element og-fouling-forecast
+@blurb REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
+@homepage index.html
+@demo index.html
+-->
+
+<dom-module id="og-fouling-forecast">
+  <template>
+    <style include="og-fouling-forecast-styles"></style>
+    <div class="flex flex--col chart-container">
+      <div class="flex flex--col">
+        <div class="flex flex--row">
+          <div class$="flex flex--{{legendAlignment}} u-3/4 legend">
+            <div class="flex flex--row">
+              <template is="dom-repeat" items="{{cfgSeries}}" index-as="idx" as="item">
+                <template is="dom-if" if="[[_hasBoundary(item)]]">
+                  <div class="flex flex__item flex--col u-pr++ zeta legend-unit dashed" 
+                    style$="border-color: {{item.upperBoundaryColor}}; ">
+                    <span class="flex flex--top muted">
+                      {{item.upperBoundaryLabel}}
+                    </span>
+                  </div>
+                </template>
+                <div class="flex flex__item flex--col u-pr++ zeta legend-unit" 
+                  style$="border-color: {{item.color}}" on-tap="_toggleSeries">
+                  <span class="flex flex--top muted">{{item.legendLabel}}</span>
+                </div>
+                <template is="dom-if" if="[[_hasBoundary(item)]]">
+                  <div class="flex flex__item flex--col u-pr++ zeta legend-unit dashed" 
+                    style$="border-color: {{item.lowerBoundaryColor}}; ">
+                    <span class="flex flex--top muted">
+                      {{item.lowerBoundaryLabel}}
+                    </span>
+                  </div>
+                </template>
+              </template>
+            </div>
+          </div>
+          <div class="flex flex--row flex--top u-1/4">
+            <div class="flex flex--col u-1/4 exchanger-sel">
+              <span class="label">{{exchangersLabel}}</span>
+              <px-dropdown
+                id="exchangersCombo"
+                items="[[exchangers]]"
+                sort-mode="key"
+                button-style="default"
+                disable-clear
+                trigger-height="30">
+              </px-dropdown>
+            </div>
+            <div class="flex flex--col u-3/4 forecast-sel">
+              <span class="label">{{forecastDaysLabel}}</span>
+              <px-dropdown
+                id="forecastCombo"
+                items="[[forecastDays]]"
+                sort-mode="key"
+                button-style="default"
+                disable-clear
+                trigger-height="30">
+              </px-dropdown>
+            </div>
+          </div>
+        </div>
+        <px-rangepicker
+          id="rangepicker"
+          show-buttons
+          date-format="[[dateFormat]]"
+          time-format="[[timeFormat]]"
+          time-zone="[[timeZone]]"
+          show-time-zone="abbreviatedText"
+          range="[[dateRange]]"
+          on-px-datetime-range-submitted="_updateBrush">
+        </px-rangepicker>
+      </div>
+      <div class="flex flex--col">
+        <div id="chart"></div>
+      </div>
+  </template>
+  <script src="dist/og-fouling-forecast.js"></script>
+</dom-module>
