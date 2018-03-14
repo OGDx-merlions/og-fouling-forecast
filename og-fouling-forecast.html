@@ -9,6 +9,7 @@
 <script src="d3-tip.js"></script>
 
 <link rel="import" href="../px-dropdown/px-dropdown.html"/>
+<link rel="import" href="../px-spinner/px-spinner.html"/>
 <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
 <link rel="import" href="css/og-fouling-forecast-styles.html">
 
@@ -28,7 +29,10 @@ REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
 <dom-module id="og-fouling-forecast">
   <template>
     <style include="og-fouling-forecast-styles"></style>
-    <div class="flex flex--col chart-container">
+    <div class="flex flex--row flex--center flex--middle">
+      <px-spinner size="50" id="spinner"></px-spinner>
+    </div>
+    <div class="flex flex--col chart-container" hidden$="[[loadInProgress]]">
       <div class="flex flex--col">
         <div class="flex flex--row">
           <div class$="flex flex--{{legendAlignment}} u-3/4 legend">
@@ -96,6 +100,7 @@ REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
       <div class="flex flex--col">
         <div id="chart"></div>
       </div>
+    </div>
   </template>
   <script src="dist/og-fouling-forecast.js"></script>
 </dom-module>

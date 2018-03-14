@@ -253,6 +253,10 @@
       toMoment: {
         type: String,
         notify: true
+      },
+      loadInProgress: {
+        type: Boolean,
+        value: true
       }
     },
 
@@ -301,6 +305,8 @@
       this._drawChart(data);
 
       this.fire("chart-drawn", {});
+      this.$.spinner.finished = true;
+      this.loadInProgress = false;
     },
     
     _setupDefaults() {
