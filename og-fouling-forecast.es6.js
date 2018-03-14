@@ -902,7 +902,8 @@
     },
 
    _setForecastDate(event) {
-    if(event.detail.selected && event.detail.val) {
+    if(event.detail.selected && event.detail.val 
+        && this.fromMoment && this.toMoment) {
       this.todayAsDate = this.todayAsDate || new Date();
       let newUpperLimit = Px.moment(this.todayAsDate.getTime(), 'x');
       this.toMoment = newUpperLimit.add(+event.detail.val, 'days');
