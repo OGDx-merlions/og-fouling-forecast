@@ -293,7 +293,8 @@
     draw() {
       this._setupDefaults();
       let d3 = Px.d3,
-          data = this.data;
+          data = this.data,
+          me = this;
       if (!data || data.length === 0 || !this.cfgSeries || !this.cfgSeries.length) {
         return;
       }
@@ -304,6 +305,7 @@
       this._drawTimelineSeparators(data);
       this._drawAxes(data);
       this._drawChart(data);
+      this._addClipPath();
 
       this.fire("chart-drawn", {});
       this.$.spinner.finished = true;
@@ -350,6 +352,7 @@
       if (this.axisData.y.tickColor) {
         updateStyle('--y-tick-color', this.axisData.y.tickColor);
       }
+      this.clipPathId = "fouling-forecast-clip-" + new Date().getTime();
     },
 
     _massageData(data) {
@@ -389,7 +392,7 @@
       d3.select(this.$.chart).select("svg").remove();
       this.containerSvg = d3.select(this.$.chart).append("svg").attr("viewBox", "0 0 " + this.width + " " + this.height).attr("preserveAspectRatio", "xMidYMid meet");
 
-      this.containerSvg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", this.adjustedWidth).attr("height", this.height).attr("x", 0).attr("y", 0);
+      this.containerSvg.append("defs").append("clipPath").attr("id", `${this.clipPathId}`).append("rect").attr("width", this.adjustedWidth).attr("height", this.height).attr("x", 0).attr("y", 0);
 
       this.svg = this.containerSvg.append("g").attr("class", "focus").attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
@@ -574,6 +577,13 @@
         }
       });
       this._drawBrushAndZoomForMinimap();
+    },
+
+    _addClipPath() {
+      let d3 = Px.d3;
+      d3.selectAll(".series-line").attr('clip-path', d => {
+        return `url(#${this.clipPathId}`;
+      });
     },
 
     _drawLineChart(_series, filteredData, idx) {
