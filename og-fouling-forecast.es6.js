@@ -9,7 +9,8 @@
     },
 
     observers: [
-      '_redraw(margin, data, cfgXAxis, cfgYAxis, cfgSeries)'
+      '_redraw(margin, data, cfgXAxis, cfgYAxis, cfgSeries)',
+      '_toggleDropdowns(exchangers, forecastDays)'
     ],
 
     properties: {
@@ -211,6 +212,7 @@
       /**
       * List of Exchangers
       * Eg: [{"key":"1","val":"HX001", "selected": true},{"key":"2","val":"HX002"}]
+      * To hide Exchangers dropdown, pass null
       *
       * @property exchangersLabel
       */
@@ -233,6 +235,7 @@
       /**
       * List of forecastDays
       * Eg: [{"key":"1","val":30, "selected": true},{"key":"2","val":60}]
+      * To hide Forecast dropdown, pass null
       *
       * @property forecastDays
       */
@@ -257,7 +260,9 @@
       loadInProgress: {
         type: Boolean,
         value: true
-      }
+      },
+      _hideExchangers: false,
+      _hideForecastDropdown: false
     },
 
     _defaultCfgXAxis: {
@@ -895,6 +900,15 @@
 					elt.style.display = "block";
 				});
 			}
+    },
+
+    _toggleDropdowns(exchangers, forecastDays) {
+      if(!exchangers || !exchangers.length) {
+        this._hideExchangers = true;
+      }
+      if(!forecastDays || !forecastDays.length) {
+        this._hideForecastDropdown = true;
+      }
     },
 
     /**

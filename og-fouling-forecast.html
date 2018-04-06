@@ -62,7 +62,7 @@ REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
             </div>
           </div>
           <div class="flex flex--row flex--top u-1/4">
-            <div class="flex flex--col u-1/4 exchanger-sel">
+            <div class="flex flex--col u-1/4 exchanger-sel" hidden$="[[_hideExchangers]]">
               <span class="label">{{exchangersLabel}}</span>
               <px-dropdown
                 id="exchangersCombo"
@@ -73,7 +73,7 @@ REPLACE THIS TEXT WITH A COMPONENT DESCRIPTION
                 trigger-height="30">
               </px-dropdown>
             </div>
-            <div class="flex flex--col u-3/4 forecast-sel">
+            <div class="flex flex--col u-3/4 forecast-sel" hidden$="[[_hideForecastDropdown]]">
               <span class="label">{{forecastDaysLabel}}</span>
               <px-dropdown
                 id="forecastCombo"
