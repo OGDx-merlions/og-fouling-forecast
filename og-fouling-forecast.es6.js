@@ -639,7 +639,7 @@
 
     _addClipPath() {
       this.svg.selectAll(".series-line")
-        .attr('clip-path', (d) => {return `url(#${this.clipPathId}`});
+        .attr('clip-path', (d) => {return `url(#${this.clipPathId})`});
     },
 
     _drawLineChart(_series, filteredData, idx) {
@@ -872,6 +872,7 @@
       if(!data || !data.length) {
         return;
       }
+      this.lines = undefined;
       Px.d3.select(this.$.chart).select("svg").remove();
       this.draw();
     },
